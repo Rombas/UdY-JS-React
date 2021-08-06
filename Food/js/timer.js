@@ -24,7 +24,6 @@ const addZero = (num) => {
 const setTimer = (selector, actionEnd) => {
 	const setTime = () => {
 		const time = getTimeInfo(actionEnd);
-		console.log(time.total);
 		if (time.total < 1000) {
 			clearInterval(timerId);
 		}

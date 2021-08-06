@@ -38,4 +38,4 @@ modalScreen.addEventListener('click', (e) => {
 
 window.addEventListener('scroll', scrollModalOpen);
 
-const modalOpenTimerId = setTimeout(modalOpen, 5000);
+// const modalOpenTimerId = setTimeout(modalOpen, 5000);
