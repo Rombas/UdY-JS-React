@@ -1,6 +1,7 @@
 const modalButtons = document.querySelectorAll('[data-modal]');
 const modalScreen = document.querySelector('.modal');
 const modalCloseBtn = document.querySelector('.modal__close');
+const callMeForms = document.querySelectorAll('form');
 
 const modalClose = () => {
 	modalScreen.classList.toggle('show');
@@ -37,5 +38,39 @@ modalScreen.addEventListener('click', (e) => {
 });
 
 window.addEventListener('scroll', scrollModalOpen);
+
+callMeForms.forEach(form => {
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const formData = new FormData(form);
+		const object = {};
+		formData.forEach(function (value, key) {
+			object[key] = value;
+		});
+		form.innerHTML = `<div class="modal__close">&times;</div>
+                    <div class="modal__title">Спасибо!</div>`;
+		document.querySelector('.modal__close').addEventListener('click', modalClose);
+
+		fetch('server.php', {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify(object)
+		})
+		.then(data => console.log(data))
+		.catch(()=>{
+			form.innerHTML = `<div class="modal__close">&times;</div>
+                    <div class="modal__title">Ошибка!</div>`;
+		})
+		.finally(() => {
+			
+		});
+	});
+
+});
+
+
 
 // const modalOpenTimerId = setTimeout(modalOpen, 5000);
