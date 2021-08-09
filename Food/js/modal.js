@@ -39,34 +39,36 @@ modalScreen.addEventListener('click', (e) => {
 
 window.addEventListener('scroll', scrollModalOpen);
 
-callMeForms.forEach(form => {
+const postData = async (url, data) => {
+	const res = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-type': 'application/json'
+		},
+		body: data
+	});
+	return await res.json();
+};
 
+callMeForms.forEach(form => {
 	form.addEventListener('submit', (e) => {
 		e.preventDefault();
+		
 		const formData = new FormData(form);
-		const object = {};
-		formData.forEach(function (value, key) {
-			object[key] = value;
-		});
+		const data = JSON.stringify(Object.fromEntries(formData.entries()));
+		postData('http://localhost:3000/requests', data)
+			.then(data => console.log(data))
+			.catch(() => {
+				form.innerHTML = `<div class="modal__close">&times;</div>
+                    <div class="modal__title">Ошибка!</div>`;
+			})
+			.finally(() => {
+
+			});
+
 		form.innerHTML = `<div class="modal__close">&times;</div>
                     <div class="modal__title">Спасибо!</div>`;
 		document.querySelector('.modal__close').addEventListener('click', modalClose);
-
-		fetch('server.php', {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: JSON.stringify(object)
-		})
-		.then(data => console.log(data))
-		.catch(()=>{
-			form.innerHTML = `<div class="modal__close">&times;</div>
-                    <div class="modal__title">Ошибка!</div>`;
-		})
-		.finally(() => {
-			
-		});
 	});
 
 });
