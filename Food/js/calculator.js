@@ -1,6 +1,7 @@
 const female = document.querySelector('#female'),
       male = document.querySelector('#male'),
 	  ratioBtns = document.querySelectorAll('.calculating__choose_big div'),
+	  forms = document.querySelectorAll('.calculating__choose_medium input'),
 	  heightForm = document.querySelector('#height'),
 	  weightForm = document.querySelector('#weight'),
 	  ageForm = document.querySelector('#age'),
@@ -52,15 +53,25 @@ ratioBtns.forEach(btn => {
 	});
 });
 
-heightForm.addEventListener('input', () => {
-	height = heightForm.value;
-	calculatingTotalCCal();
-});
-weightForm.addEventListener('input', () => {
-	weight = weightForm.value;
-	calculatingTotalCCal();
-});
-ageForm.addEventListener('input', () => {
-	age = ageForm.value;
-	calculatingTotalCCal();
+
+forms.forEach(form => {
+	form.addEventListener('input', () => {
+		if (form.value.match(/\D/g)) {
+			form.style.border = '2px solid red';
+		} else {
+			form.style.border = 'none';
+		}
+		switch (form.getAttribute('id')){
+			case 'height':
+				height = form.value;
+				break;
+			case 'weight':
+				weight = form.value;
+				break;
+			case 'age':
+				age = form.value;
+				break;
+		}
+		calculatingTotalCCal();
+	});
 });
